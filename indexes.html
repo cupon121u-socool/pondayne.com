@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>poniswedhehe</title>
+<style>
+body {
+    font-family: Arial;
+    background: #f0f0f0;
+    padding: 20px;
+}
+.box {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+}
+input, textarea {
+    width: 100%;
+    margin-top: 10px;
+    padding: 10px;
+}
+button {
+    margin-top: 10px;
+    padding: 10px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+.note {
+    background: #e6e6e6;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+.hidden {
+    display: none;
+}
+</style>
+</head>
+
+<body>
+
+<!-- ĐĂNG NHẬP -->
+<div class="box" id="loginBox">
+    <h2>🔐 Đăng nhập</h2>
+    <input type="password" id="password" placeholder="Nhập mật khẩu">
+    <button onclick="login()">Đăng nhập</button>
+    <p id="error" style="color:red;"></p>
+</div>
+
+<!-- TRANG CHÍNH -->
+<div class="box hidden" id="mainBox">
+    <h2>📦 Lưu trữ thông tin</h2>
+
+    <input id="title" placeholder="Tiêu đề">
+    <textarea id="content" placeholder="Nội dung"></textarea>
+    <button onclick="save()">Lưu</button>
+
+    <h3>Dữ liệu đã lưu:</h3>
+    <div id="list"></div>
+</div>
+
+<script>
+const PASSWORD = "pon12112011"; //
+
+function login() {
+    let pass = document.getElementById("password").value;
+    if (pass === PASSWORD) {
+        document.getElementById("loginBox").classList.add("hidden");
+        document.getElementById("mainBox").classList.remove("hidden");
+        show();
+    } else {
+        document.getElementById("error").innerText = "Sai mật khẩu!";
+    }
+}
+
+function save() {
+    let title = document.getElementById("title").value;
+    let content = document.getElementById("content").value;
+    if (title === "" || content === "") return;
+
+    let data = JSON.parse(localStorage.getItem("data") || "[]");
+    data.push({title, content});
+    localStorage.setItem("data", JSON.stringify(data));
+
+    document.getElementById("title").value = "";
+    document.getElementById("content").value = "";
+    show();
+}
+
+function show() {
+    let data = JSON.parse(localStorage.getItem("data") || "[]");
+    let html = "";
+    data.forEach(d => {
+        html += `<div class="note"><b>${d.title}</b><br>${d.content}</div>`;
+    });
+    document.getElementById("list").innerHTML = html;
+}
+</script>
+
+</body>
+</html>
